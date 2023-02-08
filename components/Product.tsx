@@ -14,7 +14,7 @@ export default class Product {
     private _brand: string = '';
     private _type: string = '';
     private _title: string = '';
-    private _category: string = 'visma';
+    private _category: string = '1'; // this may need altered - getting this info from https://help.shopify.com/txt/product_taxonomy/en.txt
     private _description: string = '';
     private _amount: string = '';
     private _measures: string = '';
