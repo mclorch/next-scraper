@@ -1,4 +1,4 @@
-import VismaScraper from "../../components/VismaScraper";
+import  scrapeVisma  from "../../components/scraper";
 
 export default function handler(req, res) {
     const body = req.body;
@@ -12,8 +12,7 @@ export default function handler(req, res) {
         website = 'https://' + website;
     }
 
-    let visma = new VismaScraper(website); // should not be class...?
-    visma.scrape()
+    scrapeVisma(website)
         .then(success => {
             console.log('SUCCESS')
             res.status(200, 'scraping done?').json({ data: 'scraping in progress!' });
