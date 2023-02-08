@@ -11,16 +11,19 @@ export default class Product {
 
     private _url: string; // needed for category, though currently commented out...
     private _window: Window;
-    private _brand:string = '';
-    private _type:string = '';
-    private _title:string = '';
-    private _category:string = '';
+    private _brand: string = '';
+    private _type: string = '';
+    private _title: string = '';
+    private _category: string = '';
     private _description: string = '';
     private _amount: string = '';
     private _measures: string = '';
     private _corresponds: string = '';
+    private _sku: string = '';
+    private _variantPrice: string = '';
+    private _imgSource: string = '';
 
-    constructor(html: string, url:string) {
+    constructor(html: string, url: string) {
         let dom = new JSDOM(html);
         this._window = dom.window;
         this._url = url;
@@ -36,8 +39,7 @@ export default class Product {
         return `${this._title} - INTE REDIGERAD`;
     }
 
-    public isProduct()
-    {
+    public isProduct() {
         // can be category as well - if title is empty we assume a category has been clicked
         let title = this.title.trim();
         return title !== '- INTE REDIGERAD'
@@ -98,11 +100,9 @@ export default class Product {
         return '';
     }
 
-
     get tags(): string {
         return '';
     }
-
 
     get opt1Name(): string {
         return '';
@@ -123,13 +123,14 @@ export default class Product {
         return '';
     }
 
-
     get sku(): string {
-        let parent = this._window.document.querySelector('.artnr')
-        return parent && parent.lastElementChild && parent.lastElementChild.innerHTML || '';
+        if(!this._sku) {
+            let parent = this._window.document.querySelector('.artnr')
+            this._sku = parent && parent.lastElementChild && parent.lastElementChild.innerHTML || '';
+        }
+
+        return this._sku;
     }
-
-
 
     get grams(): string {
         return '';
@@ -157,10 +158,13 @@ export default class Product {
 
 
     get variantPrice(): string {
-        let parent = this._window.document.querySelector('.currency');
-        let currency = parent && parent.firstElementChild && parent.firstElementChild.innerHTML;
+        if(!this._variantPrice) {
+            let parent = this._window.document.querySelector('.currency');
+            let currency = parent && parent.firstElementChild && parent.firstElementChild.innerHTML;
+            this._variantPrice = currency?.trim() || '';
+        }
 
-        return currency?.trim() || '';
+        return this._variantPrice;
     }
 
 
@@ -185,13 +189,14 @@ export default class Product {
 
 
     get imgSource(): string {
+        if(!this._imgSource) {
+            let parent = this._window.document.querySelector('.artImg')
+            let img: HTMLImageElement | null = parent && parent.lastElementChild && parent.lastElementChild.querySelector('img');
+            this._imgSource = img && img.src || '';
+        }
 
-        let parent = this._window.document.querySelector('.artImg')
-        let img:HTMLImageElement|null = parent && parent.lastElementChild && parent.lastElementChild.querySelector('img');
-
-        return img && img.src || '';
+        return this._imgSource;
     }
-
 
     get imgPosition(): string {
         return '';
@@ -242,7 +247,6 @@ export default class Product {
         return '';
     }
 
-
     get googleShoppingCustomProduct(): string {
         return '';
     }
@@ -250,7 +254,6 @@ export default class Product {
     get compareAt(): string {
         return '';
     }
-
 
     get googleCustomLabel0(): string {
         return '';
@@ -284,10 +287,13 @@ export default class Product {
     }
 
     get status(): string {
+        // assuming all products visible to scraper
+        // are active.
         return 'active';
     }
 
     private setDescriptors(): void {
+        // these are not yet used  - could be set in "opt1/2/3"
         let descriptors = this._window.document.querySelectorAll('.description p strong');
 
         descriptors.forEach((item: Node) => {
@@ -296,7 +302,6 @@ export default class Product {
     }
 
     private setDescriptorItem(name: string, value: string): void {
-
         name = name.trim();
         name = name.endsWith(':') ? name.slice(0, -1) : name;
         value = value.trim();
@@ -387,7 +392,7 @@ export default class Product {
         }
     }
 
-    private trim(val:string) {
+    private trim(val: string) {
         return val.trim().replace(/['"]+/g, '')
     }
 }
