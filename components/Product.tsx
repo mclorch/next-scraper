@@ -14,7 +14,7 @@ export default class Product {
     private _brand: string = '';
     private _type: string = '';
     private _title: string = '';
-    private _category: string = '';
+    private _category: string = 'visma';
     private _description: string = '';
     private _amount: string = '';
     private _measures: string = '';
