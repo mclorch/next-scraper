@@ -250,6 +250,12 @@
   }
 }
 
+
+.form-wrap {
+  margin: 50px;
+  max-width: 500px;
+}
+
 /* Tablet and Smaller Desktop */
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
