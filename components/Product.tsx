@@ -37,6 +37,8 @@ export default class Product {
             this._title = h1 && h1.textContent && h1.textContent.trim().replace(/['"]+/g, '') || '';
         }
 
+        // adding 'INTE REDIGERAD' to title, so that it's obvious which
+        // products have been imported and needs edit
         return `${this._title} - INTE REDIGERAD`;
     }
 
@@ -140,7 +142,7 @@ export default class Product {
      * identifiers (handles) but have the same sku
      */
     get sku(): string {
-        return '';
+        return this._sku;
     }
 
 
