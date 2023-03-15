@@ -22,6 +22,7 @@ export default class Product {
     private _sku: string = '';
     private _variantPrice: string = '';
     private _imgSource: string = '';
+    private _handle: string = '';
 
     constructor(html: string, url: string) {
         let dom = new JSDOM(html);
@@ -71,8 +72,18 @@ export default class Product {
     }
 
 
+    /**
+     * same as "artikellnummer"
+     * unique identifier for one product
+     */
     get handle(): string {
-        return '';
+
+        if(!this._handle) {
+            let parent = this._window.document.querySelector('.artnr')
+            this._handle = parent && parent.lastElementChild && parent.lastElementChild.innerHTML || '';
+        }
+
+        return this._handle;
     }
 
     get body(): string {
@@ -123,14 +134,15 @@ export default class Product {
         return '';
     }
 
+    /**
+     * Identifier for product family?
+     * e.g. different colors may have different unique
+     * identifiers (handles) but have the same sku
+     */
     get sku(): string {
-        if(!this._sku) {
-            let parent = this._window.document.querySelector('.artnr')
-            this._sku = parent && parent.lastElementChild && parent.lastElementChild.innerHTML || '';
-        }
-
-        return this._sku;
+        return '';
     }
+
 
     get grams(): string {
         return '';
@@ -189,6 +201,10 @@ export default class Product {
 
 
     get imgSource(): string {
+        // this seemed to have caused issues if images could not be retrieved from the url provided.
+        // might want to try with this uncommented again - formatting has been fixed since this issue
+        // occurred
+
         // if(!this._imgSource) {
         //     let parent = this._window.document.querySelector('.artImg')
         //     let img: HTMLImageElement | null = parent && parent.lastElementChild && parent.lastElementChild.querySelector('img');
@@ -338,7 +354,7 @@ export default class Product {
 
     get shopifyRow(): object {
         return {
-            'Handle': this.trim(this.sku),
+            'Handle': this.trim(this.handle),
             'Title': this.trim(this.title),
             'Body (HTML)': this.trim(this.body),
             'Vendor': this.trim(this.vendor),
@@ -352,7 +368,7 @@ export default class Product {
             'Option2 Value': this.trim(this.opt2Value),
             'Option3 Name': this.trim(this.opt3Name),
             'Option3 Value': this.trim(this.opt3Value),
-            'Variant SKU': '',
+            'Variant SKU': this.trim(this.sku),
             'Variant Grams': this.trim(this.grams),
             'Variant Inventory Tracker': this.trim(this.inventory),
             'Variant Inventory Qty': this.trim(this.inventoryQty),
