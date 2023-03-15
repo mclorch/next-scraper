@@ -189,11 +189,11 @@ export default class Product {
 
 
     get imgSource(): string {
-        if(!this._imgSource) {
-            let parent = this._window.document.querySelector('.artImg')
-            let img: HTMLImageElement | null = parent && parent.lastElementChild && parent.lastElementChild.querySelector('img');
-            this._imgSource = img && img.src || '';
-        }
+        // if(!this._imgSource) {
+        //     let parent = this._window.document.querySelector('.artImg')
+        //     let img: HTMLImageElement | null = parent && parent.lastElementChild && parent.lastElementChild.querySelector('img');
+        //     this._imgSource = img && img.src || '';
+        // }
 
         return this._imgSource;
     }
@@ -338,7 +338,7 @@ export default class Product {
 
     get shopifyRow(): object {
         return {
-            'Handle': this.trim(this.handle),
+            'Handle': this.trim(this.sku),
             'Title': this.trim(this.title),
             'Body (HTML)': this.trim(this.body),
             'Vendor': this.trim(this.vendor),
@@ -352,7 +352,7 @@ export default class Product {
             'Option2 Value': this.trim(this.opt2Value),
             'Option3 Name': this.trim(this.opt3Name),
             'Option3 Value': this.trim(this.opt3Value),
-            'Variant SKU': this.trim(this.sku),
+            'Variant SKU': '',
             'Variant Grams': this.trim(this.grams),
             'Variant Inventory Tracker': this.trim(this.inventory),
             'Variant Inventory Qty': this.trim(this.inventoryQty),
