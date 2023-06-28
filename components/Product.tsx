@@ -34,7 +34,7 @@ export default class Product {
     get title(): string {
         if (!this._title) {
             let h1 = this._window.document.querySelector('.ArticleDetails h1');
-            this._title = h1 && h1.textContent && h1.textContent.trim().replace(/['"]+/g, '') || '';
+            this._title = h1 && h1.textContent && h1.textContent.trim() || '';
         }
 
         // adding 'INTE REDIGERAD' to title, so that it's obvious which
