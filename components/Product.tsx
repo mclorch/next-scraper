@@ -75,14 +75,14 @@ export default class Product {
 
 
     /**
-     * same as "artikellnummer"
-     * unique identifier for one product
+     * product "handle" - grabbing from url
      */
     get handle(): string {
 
         if(!this._handle) {
-            let parent = this._window.document.querySelector('.artnr')
-            this._handle = parent && parent.lastElementChild && parent.lastElementChild.innerHTML || '';
+            let parts = this._url.split('/');
+            let index = parts.indexOf('product') + 1;
+            this._handle = parts[index].split('?')[0];
         }
 
         return this._handle;
@@ -137,11 +137,14 @@ export default class Product {
     }
 
     /**
-     * Identifier for product family?
-     * e.g. different colors may have different unique
-     * identifiers (handles) but have the same sku
+     * unique identifier
      */
     get sku(): string {
+        if(!this._sku) {
+            let parent = this._window.document.querySelector('.artnr')
+            this._sku = parent && parent.lastElementChild && parent.lastElementChild.innerHTML || '';
+        }
+
         return this._sku;
     }
 
